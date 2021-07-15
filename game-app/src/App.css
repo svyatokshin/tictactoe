@@ -6,6 +6,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: blue;
+  color: white;
 }
 
 body {
@@ -37,9 +39,12 @@ body {
   place-items: center;
   font-size: 30px;
   color: black;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Sigmar One', cursive;
 }
 
 .square:active {
   background: blue;
+  border: none;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap');
