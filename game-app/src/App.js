@@ -14,13 +14,13 @@ function App() {
     checkIfWin();
     checkTie();
     
+    
     if (player === 'X'){
       setPlayer('O')
     }
     else {
       setPlayer('X')
       }
-    
   }, [board]);
 
   useEffect(() => {
@@ -29,12 +29,12 @@ function App() {
     }
   }, [result])
 
-  useEffect(() => {
-    if(player === 'O'){
-      let rand = (Math.random * 9)
-      setTimeout(() => squareDecision(Math.floor(rand)), 500)
-    }
-  }, [board])
+  // useEffect(() => {
+  //   if(player === 'O'){
+  //     let rand = (Math.random * 9)
+  //     setTimeout(() => squareDecision(Math.floor(rand)), 500)
+  //   }
+  // }, [board])
 
   const squareDecision = (square) => {
     
@@ -56,6 +56,14 @@ function App() {
     )
   }
 
+  const checkIfRand = () => {
+    if(player === 'O'){
+          let rand = (Math.random * 9)
+          squareDecision(Math.floor(rand))
+          setPlayer('X')
+        }
+  }
+
   const checkIfWin = () => {
     Patterns.forEach((currPat) => {
       const firstPlayer = board[currPat[0]];
@@ -67,9 +75,16 @@ function App() {
         }
       })
       if (foundWinningPattern) {
+        let newWinner = player
+        if (player == "X"){
+          newWinner = "Mush";
+        }
+        if (player == 'O'){
+          newWinner = "Ryan";
+        }
         setResult({
-          winner: player,
-          state: "Won"
+          winner: newWinner,
+          state: "Wins!"
         })
       }
     });
@@ -94,9 +109,13 @@ function App() {
     setPlayer("O");
   }
 
+  const AITurn = () => {
+
+  }
+
   return (
     <div className="App">
-      <h1>Current Player {player}</h1>
+      <h1>Current Degen: {player == 'O' ? "Ryan" : "Mush"}</h1>
       <h2> Winner: {result.winner} {result.state}</h2>
       <div className="board">
         <div className="row">
