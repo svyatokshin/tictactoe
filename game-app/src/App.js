@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     checkIfWin();
     checkTie();
+    
     if (player === 'X'){
       setPlayer('O')
     }
@@ -27,6 +28,13 @@ function App() {
       restart();
     }
   }, [result])
+
+  useEffect(() => {
+    if(player === 'O'){
+      let rand = (Math.random * 9)
+      setTimeout(() => squareDecision(Math.floor(rand)), 500)
+    }
+  }, [board])
 
   const squareDecision = (square) => {
     
