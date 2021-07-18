@@ -11,13 +11,12 @@ const Img = styled.img`
 
 function Square({ val, squareDecision }) {
     let value = val;
-    if (val == 'X'){
+    if (val === 'X'){
         val = <Img src={Mush}/>
     }
-    console.log('val', value);
     return(
         <div className="square" onClick={squareDecision}>
-            { val == "O" ? <Img src={Depaulo}/>: <h5>{val}</h5>}
+            { val === "O" ? <Img src={Depaulo}/>: <h5>{val}</h5>}
         </div>
     )
 }

@@ -9,12 +9,27 @@ function App() {
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
   const [player, setPlayer] = useState("O");
   const [result, setResult] = useState({winner: "No One", state: ""});
+  const [isAiTurn, setIsAiTurn] = useState(false);
+  const [boardIndex, setBoardIndex] = useState([]);
+  const [count, setCount] = useState(0);
+  let finishedBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
 
   useEffect(() => {
+    console.log('running useEffect')
+    checkIfTie();
     checkIfWin();
-    checkTie();
     
+    // if (count === 9){
+    //   checkIfFull();
+    // }
+    console.log('count', count);
     
+    setBoardIndex(board.map((item, index) => {
+        if(item !== ""){
+          return index;
+        }
+      }))
     if (player === 'X'){
       setPlayer('O')
     }
@@ -24,24 +39,39 @@ function App() {
   }, [board]);
 
   useEffect(() => {
+    console.log(count);
+    if(board == boardIndex){
+      checkIfTie();
+      checkIfWin();
+      
+    }
+    if(isAiTurn){
+      console.log('boardIndex', boardIndex);
+      let rand = Math.floor(Math.random() * 9)
+      while (boardIndex.includes(rand)){
+        rand = Math.floor(Math.random() * 9)
+      }
+      squareDecision(rand);
+    }
+    setIsAiTurn(false)
+  }, [player])
+
+  useEffect(() => {
     if (result.state !== ""){
       restart();
     }
   }, [result])
 
-  // useEffect(() => {
-  //   if(player === 'O'){
-  //     let rand = (Math.random * 9)
-  //     setTimeout(() => squareDecision(Math.floor(rand)), 500)
-  //   }
-  // }, [board])
-
   const squareDecision = (square) => {
-    
     setBoard(
       board.map((val, index) => {
-      if (index === square && val === "") {
-        return player;
+      if (index === square && val === "" && player === 'X') {
+        setIsAiTurn(true)
+        return player
+      }
+      if (index === square && val === "" && player === 'O') {
+        setCount(count + 1);
+        return player
       }
       if (index === square && val !== ""){
         if (player === 'X'){
@@ -51,17 +81,10 @@ function App() {
           setPlayer('X')
         }
       }
+      setCount(count+1);
       return val;
       })
     )
-  }
-
-  const checkIfRand = () => {
-    if(player === 'O'){
-          let rand = (Math.random * 9)
-          squareDecision(Math.floor(rand))
-          setPlayer('X')
-        }
   }
 
   const checkIfWin = () => {
@@ -76,12 +99,13 @@ function App() {
       })
       if (foundWinningPattern) {
         let newWinner = player
-        if (player == "X"){
+        if (player === "X"){
           newWinner = "Mush";
         }
-        if (player == 'O'){
+        if (player === 'O'){
           newWinner = "Ryan";
         }
+        setCount(0)
         setResult({
           winner: newWinner,
           state: "Wins!"
@@ -90,7 +114,7 @@ function App() {
     });
   }
 
-  const checkTie = () => {
+  const checkIfTie = () => {
     let filled = true;
     board.forEach((square) => {
       if(square === ""){
@@ -98,19 +122,28 @@ function App() {
       } 
     })
     if (filled) {
+      checkIfWin();
       setResult({
         winner:"Both",
         state: 'Tied'})
     }
   }
 
+  const checkIfFull = () => {
+    setBoardIndex(board.map((item, index) => {
+      if(item !== ""){
+        return index;
+      }
+    }))
+    if (boardIndex == finishedBoard){
+      checkIfWin();
+      restart();
+    }
+  }
+
   const restart = () => {
     setBoard(["", "", "", "", "", "", "", "", ""]);
     setPlayer("O");
-  }
-
-  const AITurn = () => {
-
   }
 
   return (
