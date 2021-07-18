@@ -39,21 +39,26 @@ function App() {
   }, [board]);
 
   useEffect(() => {
-    console.log(count);
-    if(board == boardIndex){
-      checkIfTie();
-      checkIfWin();
-      
-    }
-    if(isAiTurn){
-      console.log('boardIndex', boardIndex);
-      let rand = Math.floor(Math.random() * 9)
-      while (boardIndex.includes(rand)){
-        rand = Math.floor(Math.random() * 9)
+    if(count < 9){
+      console.log(count);
+      if(board == boardIndex){
+        checkIfTie();
+        checkIfWin();
+        
       }
-      squareDecision(rand);
+      if(isAiTurn){
+        console.log('boardIndex', boardIndex);
+        let rand = Math.floor(Math.random() * 9)
+        while (boardIndex.includes(rand)){
+          rand = Math.floor(Math.random() * 9)
+        }
+        squareDecision(rand);
+      }
+      setIsAiTurn(false)
     }
-    setIsAiTurn(false)
+    else{
+      restart();
+    }
   }, [player])
 
   useEffect(() => {
